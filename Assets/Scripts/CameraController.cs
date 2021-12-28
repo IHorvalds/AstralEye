@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
+    [SerializeField] public Transform playerTransform;
 
     public float minX = 0f, maxX = 10f;
     public float minY = 0f, maxY = 10f;

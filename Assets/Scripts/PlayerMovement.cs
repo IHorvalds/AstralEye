@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class SharedPlayerProperties {
+    public static bool isInSecondForm = false;
+}
+
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody2D m_rb;
@@ -11,7 +15,11 @@ public class PlayerMovement : MonoBehaviour
     public float verticalSpeed;
     private bool _previousDirection = true; // false left, true right
     private BoxCollider2D col;
+
+    // private bool isInSecondForm = false;
     [SerializeField] private LayerMask groundLayer;
+
+    public CameraController cc;
 
 
     private enum PlayerState {
@@ -30,22 +38,32 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_rb.bodyType == RigidbodyType2D.Dynamic) {
+        bool grounded = isGrounded();
+        if (m_rb.bodyType == RigidbodyType2D.Dynamic && !SharedPlayerProperties.isInSecondForm) {
+
+            cc.playerTransform = this.transform;
 
             float horizontal = Input.GetAxisRaw ("Horizontal");
-            bool grounded = isGrounded();
             Vector2 _vel = new Vector2(horizontal * horizontalSpeed, m_rb.velocity.y);
 
+            // Jump
             if (Input.GetButtonDown("Jump") && grounded) {
                 _vel.y = verticalSpeed;
             }
 
             m_rb.velocity = _vel;
 
-            SetAnimation(m_rb.velocity);
 
             spriteRenderer.flipX = !_previousDirection;
+
+
         }
+        // Switch form
+        if (Input.GetButtonDown("SwitchForm") && grounded) {
+            SharedPlayerProperties.isInSecondForm = !SharedPlayerProperties.isInSecondForm;
+            m_rb.bodyType = SharedPlayerProperties.isInSecondForm ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+        }
+        SetAnimation(m_rb.velocity);
     }
 
     private void SetAnimation(Vector2 velocity)
