@@ -23,8 +23,10 @@ public class PlayerLifeCycle : MonoBehaviour
     }
 
     private void Die() {
-        rb.bodyType = RigidbodyType2D.Static;
+        anim.ResetTrigger("attack");
         anim.SetTrigger("dead");
+        rb.bodyType = RigidbodyType2D.Static;
+        SharedPlayerProperties.isDead = true;
     }
 
     private void ResetGame()

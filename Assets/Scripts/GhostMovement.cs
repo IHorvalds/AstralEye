@@ -16,7 +16,7 @@ public class GhostMovement : MonoBehaviour
 
     public CameraController cc;
 
-    public Transform playerTransform;
+    public GameObject player;
 
     private float _time = 0f;
     private bool _blink = true;
@@ -48,7 +48,6 @@ public class GhostMovement : MonoBehaviour
             cc.playerTransform = this.transform;
 
             
-
             float horizontal = Input.GetAxisRaw ("Horizontal");
             _vel.x = horizontal * horizontalSpeed;
 
@@ -56,20 +55,22 @@ public class GhostMovement : MonoBehaviour
             if (Input.GetAxisRaw("Vertical") > 0) {
                 _vel.y = verticalSpeed;
             }
-            if (Input.GetAxisRaw("Vertical") < 0) {
+            else if (Input.GetAxisRaw("Vertical") < 0) {
                 _vel.y = -verticalSpeed;
+            } else {
+                _vel.y += Mathf.Sin(Time.realtimeSinceStartup * Mathf.PI) / 10;
             }
 
 
 
             spriteRenderer.flipX = !_previousDirection;
             ghostLink.positionCount = 2;
-            ghostLink.SetPosition(0, playerTransform.position);
-            ghostLink.SetPosition(1, this.transform.position);
+            ghostLink.SetPosition(0, player.GetComponent<Collider2D>().bounds.center);
+            ghostLink.SetPosition(1, col.bounds.center);
 
         } else {
             // Switch form
-            this.transform.position = playerTransform.position + new Vector3(5.0f, 0.0f, 0.0f);
+            this.transform.position = player.GetComponent<Collider2D>().bounds.center + new Vector3(5.0f, 0.0f, 0.0f);
         }
         m_rb.velocity = _vel;
 
@@ -124,6 +125,6 @@ public class GhostMovement : MonoBehaviour
 
     private float getDistanceToPlayer()
     {
-        return Mathf.Abs(Vector3.Distance(this.transform.position, playerTransform.position));
+        return Mathf.Abs(Vector3.Distance(this.transform.position, player.GetComponent<Collider2D>().bounds.center));
     }
 }

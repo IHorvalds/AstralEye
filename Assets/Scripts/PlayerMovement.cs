@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class SharedPlayerProperties {
     public static bool isInSecondForm = false;
+    public static bool isDead = false;
 }
 
 public class PlayerMovement : MonoBehaviour
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         m_animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         col = GetComponent<BoxCollider2D>();
+        SharedPlayerProperties.isDead = false;
     }
 
     // Update is called once per frame
@@ -43,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
             cc.playerTransform = this.transform;
 
-            float horizontal = Input.GetAxisRaw ("Horizontal");
+            float horizontal = Input.GetButton("Fire1") ? 0 : Input.GetAxisRaw ("Horizontal");
             Vector2 _vel = new Vector2(horizontal * horizontalSpeed, m_rb.velocity.y);
 
             // Jump
