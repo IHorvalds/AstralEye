@@ -101,6 +101,7 @@ public class GhostMovement : MonoBehaviour
             _blink = true;
             _time = 0f;
             SharedPlayerProperties.isInSecondForm = false;
+            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         }
     }
 

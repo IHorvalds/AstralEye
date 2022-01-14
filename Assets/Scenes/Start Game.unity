@@ -690,11 +690,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5930481218017624531, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
       propertyPath: sceneToLoad
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5930481218017624532, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
       propertyPath: m_Name
       value: StartButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 963182518}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PrepareToDeleteSaveFile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: NewGameButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5930481218017624534, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5930481218017624535, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
       propertyPath: m_Pivot.x
@@ -802,3 +830,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+--- !u!1 &963182517 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5930481218017624532, guid: f66eec1fb64fa4698a34385b2975ccf0, type: 3}
+  m_PrefabInstance: {fileID: 963182516}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &963182518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963182517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f4a812cfa8b4ff8ada60de1488bbc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

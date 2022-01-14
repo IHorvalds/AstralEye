@@ -49,23 +49,26 @@ public class WaypointFollower : MonoBehaviour
         attackBox.transform.position = transform.position; // reset attackbox
         if(!isAttacking && distanceToPlayer * attackDirection > 0 && distanceToPlayer * attackDirection < attackRangeTrigger)
         {
-            isAttacking = true;
-            Attack();
+            StartCoroutine(Attack());
 
-        }
-        else
+        } else
         {
-            Move();
+            if (!isAttacking)
+            {
+                Move();
+            }
         }
     }
 
-    private void Attack()
+    private IEnumerator Attack()
     {
         // Attack shouldn't happen instantly;
 
-        
-        attackBox.transform.position += new Vector3(attackDirection * attackRangeTrigger, 0);
+        isAttacking = true;
         anim.SetInteger("state", 1);
+        yield return new WaitForSeconds(1.0f);
+        attackBox.transform.position += new Vector3(attackDirection * attackRangeTrigger, 0);
+        isAttacking = false;
     }
 
     private void Move()

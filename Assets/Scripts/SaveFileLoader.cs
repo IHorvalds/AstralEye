@@ -1,8 +1,8 @@
 using UnityEngine;
-using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using System.IO;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 [Serializable]
@@ -11,9 +11,9 @@ public class SaveData
     public int goldenBottles;
     public int lives;
     public float currentHealth;
-    public int[] unlockedLevels;
+    public List<int> unlockedLevels;
 
-    public DateTime lastPlayed;
+    public string lastPlayed;
 }
 
 public class SaveFileLoader : MonoBehaviour
@@ -22,22 +22,27 @@ public class SaveFileLoader : MonoBehaviour
     public RuntimeState runtimestate;
     public Button button;
 
+    private void Start()
+    {
+        if (button != null && this.saveFile != -1)
+        {
 
-    // private void OnGUI() {
-    //     string filename = Application.persistentDataPath + "AstralEye-" + this.saveFile.ToString() + ".save";
+            string filename = Application.persistentDataPath + "/AstralEye-" + this.saveFile.ToString() + ".json";
+            string buttonText = "File " + (this.saveFile + 1);
 
-    //     if (File.Exists(filename)) 
-    //     {
-    //         BinaryFormatter bf = new BinaryFormatter();
-    //         FileStream file_stream = File.Open(filename, FileMode.Open);
-    //         SaveData data = (SaveData)bf.Deserialize(file_stream);
-    //         file_stream.Close();
+            Debug.Log("Loading " + filename);
 
-    //         Text t = button.GetComponent<Text>();
+            if (File.Exists(filename)) 
+            {
+                string jsonSaveData = System.IO.File.ReadAllText(filename);
+                SaveData data = JsonUtility.FromJson<SaveData>(jsonSaveData);
 
-    //         t.text = data.lastPlayed.ToShortDateString();
-    //     }
-    // }
+                buttonText = buttonText + " \n " + data.lastPlayed;
+            }
+
+            button.GetComponentInChildren<Text>().text = buttonText;
+        }
+    }
 
     public void LoadFile()
     {
@@ -48,15 +53,23 @@ public class SaveFileLoader : MonoBehaviour
         }
 
         runtimestate.currentSaveFile = this.saveFile;
-        string filename = Application.persistentDataPath + "/AstralEye-" + runtimestate.currentSaveFile.ToString() + ".save";
+        string filename = Application.persistentDataPath + "/AstralEye-" + runtimestate.currentSaveFile.ToString() + ".json";
         Debug.Log(filename);
+
+        int shouldDeleteFile = PlayerPrefs.GetInt("ShouldDeleteSelectedFile", 0);
+
+        if (shouldDeleteFile != 0)
+        {
+            File.Delete(filename);
+            Debug.Log("Was supposed to delete " + filename);
+            Debug.Log(File.Exists(filename));
+            PlayerPrefs.SetInt("ShouldDeleteSelectedFile", 0);
+        }
 
         if (File.Exists(filename)) 
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file_stream = File.Open(filename, FileMode.Open);
-            SaveData data = (SaveData)bf.Deserialize(file_stream);
-            file_stream.Close();
+            string jsonSaveData = System.IO.File.ReadAllText(filename);
+            SaveData data = JsonUtility.FromJson<SaveData>(jsonSaveData);
 
             runtimestate.currentSaveFile = saveFile;
             runtimestate.goldenBottles = data.goldenBottles;
@@ -69,6 +82,12 @@ public class SaveFileLoader : MonoBehaviour
         }
 	    else {
 		    Debug.LogError("There is no save data!");
+            // default values
+            runtimestate.currentHealth = 100;
+            runtimestate.goldenBottles = 0;
+            runtimestate.lives = 10;
+            runtimestate.unlockedLevels.Clear();
+            runtimestate.unlockedLevels.Add(0);
             SaveFile();
         }
     }
@@ -77,20 +96,19 @@ public class SaveFileLoader : MonoBehaviour
     {
         this.saveFile = PlayerPrefs.GetInt("CurrentSaveFile", 0);
         runtimestate.currentSaveFile = this.saveFile;
-        string filename = Application.persistentDataPath + "/AstralEye-" + runtimestate.currentSaveFile.ToString() + ".save";
+        string filename = Application.persistentDataPath + "/AstralEye-" + runtimestate.currentSaveFile.ToString() + ".json";
 
-        BinaryFormatter bf = new BinaryFormatter(); 
-        FileStream file = File.Create(filename); 
         SaveData data = new SaveData();
 
         data.goldenBottles = runtimestate.goldenBottles;
         data.lives = runtimestate.lives;
         data.currentHealth = runtimestate.currentHealth;
         data.unlockedLevels = runtimestate.unlockedLevels;
-        data.lastPlayed = new DateTime();
+        data.lastPlayed = DateTime.Now.ToShortDateString();
 
-        bf.Serialize(file, data);
-        file.Close();
+        string saveData = JsonUtility.ToJson(data);
+        System.IO.File.WriteAllText(filename, saveData);
+
         Debug.Log(filename);
         Debug.Log("Game data saved!");
     }

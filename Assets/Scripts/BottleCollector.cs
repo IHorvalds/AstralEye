@@ -6,20 +6,29 @@ using UnityEngine.UI;
 public class BottleCollector : MonoBehaviour
 {
     // private int collected = 0;
-    [SerializeField] private Text someDisplay;
+    [SerializeField] private Text collectiblesDisplay;
+    [SerializeField] private Text healthDisplay;
+    [SerializeField] private Text livesDisplay;
     public RuntimeState runtimeState;
 
     private void Start() {
-        someDisplay.text = "Collectibles: " + runtimeState.goldenBottles;    
+        collectiblesDisplay.text = "Collectibles: " + runtimeState.goldenBottles;
+        healthDisplay.text = "Health: " + runtimeState.currentHealth;
+        livesDisplay.text = "Lives: " + runtimeState.lives;
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("CollectibleBottle"))
         {
             Destroy(other.gameObject);
-            runtimeState.goldenBottles++;
-
-            someDisplay.text = "Collectibles: " + runtimeState.goldenBottles;
+            runtimeState._bottledCollectedDuringLevel++;
         }
+    }
+
+    void Update()
+    {
+        collectiblesDisplay.text = "Collectibles: " + (runtimeState.goldenBottles + runtimeState._bottledCollectedDuringLevel);
+        healthDisplay.text = "Health: " + runtimeState.currentHealth;
+        livesDisplay.text = "Lives: " + runtimeState.lives;
     }
 }
