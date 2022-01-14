@@ -33,6 +33,12 @@ public class PlayerLifeCycle : MonoBehaviour
         }
     }
 
+    // private void OnTriggerEnter2D(Collider2D other) {
+    //     if (other.gameObject.CompareTag("EnemyAttackBox")) {
+    //         Die(); // deduct health points here
+    //     }
+    // }
+
     private void Die() {
         runtimestate._bottledCollectedDuringLevel = 0;
         runtimestate.lives -= 1;
