@@ -22,6 +22,12 @@ public class PlayerLifeCycle : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("EnemyAttackBox")) {
+            Die(); // deduct health points here
+        }
+    }
+
     private void Die() {
         anim.ResetTrigger("attack");
         anim.SetTrigger("dead");

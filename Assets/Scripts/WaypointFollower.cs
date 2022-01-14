@@ -7,6 +7,17 @@ public class WaypointFollower : MonoBehaviour
     public GameObject player;
 
     private Animator anim;
+    // This should probably be an interface of Attack
+    // An enemy class should also be derived from waypoint follower
+    // instead of having everything here
+    private GameObject attackBox;
+    private BoxCollider2D attackBoxCollider;
+    private int attackDirection = 0;
+
+    [SerializeField] private float attackRangeTrigger = 3;
+    [SerializeField] private float attackWindupFrames = 10; 
+    private int attackFrame = 0;
+    private bool isAttacking = false;
 
     private enum EnemyState{
         SkeletonAttack, SkeletonWalk, SkeletonDeath
@@ -19,7 +30,6 @@ public class WaypointFollower : MonoBehaviour
     [SerializeField] private GameObject[] waypoints;
     private int currentWaypointIndex = 0;
 
-    private bool currentDirection = false;
 
     [SerializeField] private float speed = 2f;
 
@@ -28,23 +38,38 @@ public class WaypointFollower : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.flipX = true;
         anim = GetComponent<Animator>();
+        attackBox = transform.Find("EnemyAttackBox").gameObject;
+        attackBoxCollider = attackBox.GetComponent<BoxCollider2D>();
     }
 
     private void Update()
     {
-        if(Vector2.Distance(player.transform.position,transform.position) < 5)
+        attackDirection = spriteRenderer.flipX ? -1 : 1;
+        float distanceToPlayer = player.transform.position.x - transform.position.x;
+        attackBox.transform.position = transform.position; // reset attackbox
+        if(!isAttacking && distanceToPlayer * attackDirection > 0 && distanceToPlayer * attackDirection < attackRangeTrigger)
         {
-            Attack();
+            isAttacking = true;
+            attackFrame = Time.frameCount;
+            anim.SetInteger("state", 1);
+
         }
         else
         {
             Move();
         }
+        Debug.Log(Time.frameCount - attackFrame);
+        if (isAttacking && Time.frameCount - attackFrame > attackWindupFrames) Attack();
+        if (isAttacking && Time.frameCount - attackFrame > attackWindupFrames * 2) isAttacking = false;
     }
 
     private void Attack()
     {
-        anim.SetInteger("state", 1);
+        // Attack shouldn't happen instantly;
+
+        
+        attackBox.transform.position += new Vector3(attackDirection * attackRangeTrigger, 0);
+
     }
 
     private void Move()
@@ -67,18 +92,16 @@ public class WaypointFollower : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Spikes"))
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("PlayerAttackBox"))
         {
             Die();
         }
     }
 
     private void Die() {
+        // die should wait for animation TODO
         anim.SetInteger("state", 2);
-        anim.ResetTrigger("attack");
-        anim.SetTrigger("dead");
-        rb.bodyType = RigidbodyType2D.Static;
-        SharedPlayerProperties.isDead = true;
+        gameObject.SetActive(false);
     }
 }
