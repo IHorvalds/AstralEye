@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttackAndHit : MonoBehaviour
 {
     // Start is called before the first frame update
+    public RuntimeState runtimestate;
     private Animator anim;
     private Rigidbody2D m_rb;
     private bool startedAttack = false;
@@ -22,6 +23,11 @@ public class PlayerAttackAndHit : MonoBehaviour
         {
             StartCoroutine(Attack());
         }
+        if (Input.GetButton("TakeDamage") && !SharedPlayerProperties.isDead && !takingDamage)
+        {
+            Debug.Log("Taking damage");
+            StartCoroutine(Damage());
+        }
     }
 
     IEnumerator Attack()
@@ -36,6 +42,7 @@ public class PlayerAttackAndHit : MonoBehaviour
     {
         takingDamage = true;
         // TODO: actually take the damage. Decrese player health
+        runtimestate.currentHealth -= 2;
         yield return new WaitForSeconds(1f); // can only get hit once a second
         takingDamage = false;
     }
