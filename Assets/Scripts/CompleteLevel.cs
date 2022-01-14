@@ -8,6 +8,7 @@ public class CompleteLevel : MonoBehaviour
     private AudioSource finishSound;
     private bool enteredExitArea = false;
     private SaveFileLoader sfl;
+    public int currentLevel;
     
     void Start()
     {
@@ -36,6 +37,13 @@ public class CompleteLevel : MonoBehaviour
     private void Update() {
         if (enteredExitArea && Input.GetAxisRaw("Vertical") > 0.1f)
         {
+            if (currentLevel < 3 && !sfl.runtimestate.unlockedLevels.Contains(currentLevel+1))
+            {
+                sfl.runtimestate.unlockedLevels.Add(currentLevel + 1);
+            }
+
+            sfl.runtimestate.goldenBottles += sfl.runtimestate._bottledCollectedDuringLevel;
+            sfl.runtimestate._bottledCollectedDuringLevel = 0;
             sfl.SaveFile();
             finishSound.Play();
             LevelCompleted();
