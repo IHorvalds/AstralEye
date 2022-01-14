@@ -7,10 +7,13 @@ public class CompleteLevel : MonoBehaviour
 {
     private AudioSource finishSound;
     private bool enteredExitArea = false;
+    private SaveFileLoader sfl;
     
     void Start()
     {
         finishSound = GetComponent<AudioSource>();
+        sfl = GetComponent<SaveFileLoader>();
+        sfl.LoadFile();
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
@@ -33,6 +36,7 @@ public class CompleteLevel : MonoBehaviour
     private void Update() {
         if (enteredExitArea && Input.GetAxisRaw("Vertical") > 0.1f)
         {
+            sfl.SaveFile();
             finishSound.Play();
             LevelCompleted();
         }

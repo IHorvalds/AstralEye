@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/End Game.unity
     guid: 660bcf5977fa24f469b2550f9b2c2cd7
+  - enabled: 1
+    path: Assets/Scenes/SaveFilePicker.unity
+    guid: 756392a3b634046f98011defd15c5e03
   m_configObjects: {}

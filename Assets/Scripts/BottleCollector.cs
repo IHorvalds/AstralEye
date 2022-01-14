@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class BottleCollector : MonoBehaviour
 {
-    private int collected = 0;
+    // private int collected = 0;
     [SerializeField] private Text someDisplay;
+    public RuntimeState runtimeState;
+
+    private void Start() {
+        someDisplay.text = "Collectibles: " + runtimeState.goldenBottles;    
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("CollectibleBottle"))
         {
             Destroy(other.gameObject);
-            collected++;
+            runtimeState.goldenBottles++;
 
-            someDisplay.text = "Collectibles: " + collected;
+            someDisplay.text = "Collectibles: " + runtimeState.goldenBottles;
         }
     }
 }

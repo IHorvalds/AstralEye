@@ -1421,6 +1421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   someDisplay: {fileID: 1470297127}
+  runtimeState: {fileID: 11400000, guid: 05dd35f362cb742a19a2897af5c75b07, type: 2}
 --- !u!95 &772336296
 Animator:
   serializedVersion: 3
@@ -23906,6 +23907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   someDisplay: {fileID: 1470297127}
+  runtimeState: {fileID: 11400000, guid: 05dd35f362cb742a19a2897af5c75b07, type: 2}
 --- !u!114 &1308866832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29243,6 +29245,7 @@ GameObject:
   - component: {fileID: 1870977692}
   - component: {fileID: 1870977691}
   - component: {fileID: 1870977693}
+  - component: {fileID: 1870977694}
   m_Layer: 0
   m_Name: PlayerExit
   m_TagString: LevelExit
@@ -29449,6 +29452,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1870977694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870977688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13abf207ab6a845888271375b3a55422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveFile: -1
+  runtimestate: {fileID: 11400000, guid: 05dd35f362cb742a19a2897af5c75b07, type: 2}
+  button: {fileID: 0}
 --- !u!1 &1914804702
 GameObject:
   m_ObjectHideFlags: 0
